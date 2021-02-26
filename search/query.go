@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 )
 
 type item struct {
@@ -21,17 +22,14 @@ type Result struct {
 	QueryTime float64 `json:"queryTime"` // tim taken to run search
 }
 
-// TODO: let user set this
-const host = "http://localhost/localgoogoo/"
-
-// location of the search script wrt host
+// location of the search script wrt localgoogoo root dir
 const path = "/php/search/api.search.php"
 
 // Search for a query
-func Search(query string) Result {
-	url := fmt.Sprintf("%s%s?q=%s", host, path, query)
+func Search(host string, query string) Result {
+	urlString := fmt.Sprintf("%s%s?q=%s", host, path, url.PathEscape(query))
 
-	resp, err := http.Get(url)
+	resp, err := http.Get(urlString)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -39,10 +37,13 @@ func Search(query string) Result {
 	if resp.StatusCode != 200 {
 		log.Fatalf(`
 %d error, Please make sure your localGoogoo is up to date
+If it is, then make sure your HOST is correctly set  (see '--config' flag)
 
-If it is, then make sure your HOST is correctly set
+Try opening the following url on your browser, it should return a JSON string
 (%s)
-`, resp.StatusCode, host)
+
+Create an issue if you think this is a bug: (http://github.com/kodejuice/localgoogoo-go/issues/new).
+`, resp.StatusCode, urlString)
 	}
 
 	// We Read the response body on the line below.

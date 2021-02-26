@@ -12,6 +12,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/kodejuice/localgoogoo-go/search"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // searchCmd represents the search command
@@ -26,14 +27,19 @@ var searchCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		var result search.Result = searchResult(strings.Join(args[1:], " "))
+		query := strings.Join(args[0:], " ")
+		var result search.Result = searchResult(query)
 
 		printResult(result)
 	},
 }
 
 func searchResult(q string) search.Result {
-	return search.Search(q)
+	// get host from config file
+	host := viper.Get("HOST").(string)
+	// should never return nil, default already set in root.go
+
+	return search.Search(host, q)
 }
 
 // output search result to stdout
