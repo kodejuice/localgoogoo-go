@@ -5,8 +5,9 @@ This file is part of the CLI application localgoogoo.
 package cmd
 
 import (
+	"errors"
 	"fmt"
-	"log"
+	"strings"
 
 	"github.com/fatih/color"
 	"github.com/kodejuice/localgoogoo-go/search"
@@ -18,12 +19,14 @@ var searchCmd = &cobra.Command{
 	Use:   "search <query>",
 	Short: "Search the localgoogoo database",
 	Long:  `Makes an HTTP request to the localgoogoo installed on your system, rendering the search result on your terminal`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
-			log.Fatalln("No query specified, see the '--help' flag")
+			return errors.New("Requires a query argument")
 		}
-
-		var result search.Result = searchResult(args[0])
+		return nil
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+		var result search.Result = searchResult(strings.Join(args[1:], " "))
 
 		printResult(result)
 	},
