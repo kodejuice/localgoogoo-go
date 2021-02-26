@@ -1,8 +1,9 @@
+package cmd
+
 /*
 Copyright © 2020 Sochima Biereagu <sochima.agu1@gmail.com>
 This file is part of the CLI application localgoogoo.
 */
-package cmd
 
 import (
 	"errors"
