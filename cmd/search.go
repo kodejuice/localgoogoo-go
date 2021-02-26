@@ -1,40 +1,56 @@
 /*
 Copyright © 2020 Sochima Biereagu <sochima.agu1@gmail.com>
-This file is part of the CLI application googoo.
+This file is part of the CLI application localgoogoo.
 */
 package cmd
 
 import (
 	"fmt"
+	"log"
 
+	"github.com/fatih/color"
+	"github.com/kodejuice/localgoogoo-go/search"
 	"github.com/spf13/cobra"
 )
 
 // searchCmd represents the search command
 var searchCmd = &cobra.Command{
-	Use:   "search",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:   "search <query>",
+	Short: "Search the localgoogoo database",
+	Long:  `Makes an HTTP request to the localgoogoo installed on your system, rendering the search result on your terminal`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
+		if len(args) < 1 {
+			log.Fatalln("No query specified, see the '--help' flag")
+		}
+
+		var result search.Result = searchResult(args[0])
+
+		printResult(result)
 	},
+}
+
+func searchResult(q string) search.Result {
+	return search.Search(q)
+}
+
+// output search result to stdout
+func printResult(r search.Result) {
+	yellow := color.New(color.FgYellow, color.Bold).SprintFunc()
+	green := color.New(color.FgGreen, color.Bold).SprintFunc()
+	cyan := color.New(color.FgCyan, color.Bold).SprintFunc()
+
+	fmt.Printf("%d Result(s) (%.2f seconds)", r.Total, r.QueryTime)
+
+	ln := len(r.Results)
+	for i := ln - 1; i >= 0; i-- {
+		item := r.Results[i]
+		fmt.Printf("\n\n%s %s\n%s\n%s", cyan(i+1), green(item.Title), yellow(item.URL), item.Content)
+	}
+
+	// print new line
+	fmt.Println("")
 }
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// searchCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// searchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
