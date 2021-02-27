@@ -7,7 +7,7 @@
 
 <p align="center">
 <a href="https://asciinema.org/a/395033">
-<img src="./terminal-shot.png" alt="Asciicast" width="734" height="700"/>
+<img src="./terminal-shot.png" alt="Asciicast" width="893" height="650"/>
 </a>
 </p>
 
