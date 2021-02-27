@@ -6,16 +6,14 @@
 </p>
 
 <p align="center">
-<a href="https://asciinema.org/a/395033">
-<img src="./terminal-shot.png" alt="Asciicast" width="893" height="650"/>
+<a href="https://asciinema.org/a/395042">
+<img src="./terminal-shot.png" alt="Asciicast" width="931" height="763"/>
 </a>
 </p>
 
-A command line tool that lets you use localGoogoo from the terminal (written in Go).
+A command line tool that lets you use localGoogoo from the terminal.
 
-Don't know what localGoogoo is?, you should <a href="https://github.com/kodejuice/localgoogoo-go"> check it out </a>
-
-
+Don't know what localGoogoo is?, you should <a href="https://github.com/kodejuice/localgoogoo"> check it out </a>
 
 ## Installation
 
