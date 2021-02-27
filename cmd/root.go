@@ -6,6 +6,8 @@ This file is part of the CLI application googoo.
 */
 
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -16,10 +18,9 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "localgoogoo",
+	Use:   os.Args[0], /* command name */
 	Short: "A command line tool for your localgoogoo database",
 	Long:  `A command line tool that lets you query/manage your localgoogoo database`,
-	// Run: func(cmd *cobra.Command, args []string) {},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
