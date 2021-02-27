@@ -1,21 +1,20 @@
-<h1 align="center"><img src="./localgoogoo.png" alt="localgoogoo" /></h1>
+<h1 align="center"><img width="512" src="./localgoogoo.png" alt="localgoogoo" /></h1>
 
 <p align="center">
-
 <a href="https://github.com/kodejuice/localgoogoo-go/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-yellowgreen.svg?maxAge=2592000" alt="License" /></a>
-
 <a href="https://github.com/kodejuice/localgoogoo-go/actions"><img src="https://github.com/kodejuice/localgoogoo-go/workflows/ci/badge.svg?branch=master" alt="Build Status" /></a>
 </p>
-
-A command line tool that lets you use localGoogoo from the terminal (written in Go).
-
-Don't know what localGoogoo is?, you should <a href="https://github.com/kodejuice/localgoogoo-go"> check it out </a>
 
 <p align="center">
 <a href="https://asciinema.org/a/395033">
 <img src="https://i.ibb.co/Jn5f22s/asciinema-shot.png" alt="Asciicast" width="734"/>
 </a>
 </p>
+
+A command line tool that lets you use localGoogoo from the terminal (written in Go).
+
+Don't know what localGoogoo is?, you should <a href="https://github.com/kodejuice/localgoogoo-go"> check it out </a>
+
 
 
 ## Installation
