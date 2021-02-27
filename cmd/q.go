@@ -16,9 +16,13 @@ import (
 	"github.com/spf13/viper"
 )
 
+// flag variables
+var resultCount *int64
+var reverseResults bool
+
 // searchCmd represents the search command
 var searchCmd = &cobra.Command{
-	Use:   "search <query>",
+	Use:   "q <query>",
 	Short: "Search the localgoogoo database",
 	Long:  `Makes an HTTP request to the localgoogoo installed on your system, rendering the search result on your terminal`,
 	Args: func(cmd *cobra.Command, args []string) error {
@@ -37,8 +41,8 @@ var searchCmd = &cobra.Command{
 
 func searchResult(q string) search.Result {
 	// get host from config file
-	host := viper.Get("HOST").(string)
 	// should never return nil, default already set in root.go
+	host := viper.Get("HOST").(string)
 
 	return search.Search(host, q)
 }
@@ -51,16 +55,47 @@ func printResult(r search.Result) {
 
 	fmt.Printf("%d Result(s) (%.2f seconds)", r.Total, r.QueryTime)
 
-	ln := len(r.Results)
-	for i := ln - 1; i >= 0; i-- {
-		item := r.Results[i]
-		fmt.Printf("\n\n%s %s\n%s\n%s", cyan(i+1), green(item.Title), yellow(item.URL), item.Content)
+	// how many items are we printing?
+	ln := int64(len(r.Results))
+	if v := *resultCount; v < ln {
+		ln = v
+	}
+
+	// loop over results and print
+
+	var currIndex int64 = 0
+	if reverseResults {
+		currIndex = ln - 1
+	}
+
+	for {
+		if currIndex == -1 || currIndex == ln {
+			break
+		}
+
+		item := r.Results[currIndex]
+		fmt.Printf("\n\n%s %s\n%s\n%s", cyan(currIndex+1), green(item.Title), yellow(item.URL), item.Content)
+
+		currIndex += advance(reverseResults)
 	}
 
 	// print new line
 	fmt.Println("")
 }
 
+// Used to advance currIndex to next item while printing results.
+// if we're printing in reversed order go back `-1`
+// else go foward `1`
+func advance(reversed bool) int64 {
+	if reversed {
+		return -1
+	}
+	return 1
+}
+
 func init() {
+	resultCount = searchCmd.PersistentFlags().Int64P("count", "n", 10, "number of results to display")
+	searchCmd.PersistentFlags().BoolVarP(&reverseResults, "reverse", "r", false, "display results in reversed order")
+
 	rootCmd.AddCommand(searchCmd)
 }
