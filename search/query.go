@@ -9,6 +9,10 @@ import (
 	"net/url"
 )
 
+// Make a request (w/ search query) to localGoogoo,
+// and parse the json string response into a Result struct
+// return that result
+
 type item struct {
 	Title   string `json:"title"`
 	URL     string `json:"url"`
