@@ -8,6 +8,8 @@ This file is part of the CLI application localgoogoo.
 import (
 	"errors"
 	"fmt"
+	"log"
+	"net/http"
 	"strings"
 
 	"github.com/fatih/color"
@@ -32,7 +34,7 @@ var searchCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		query := strings.Join(args[0:], " ")
+		query := strings.Join(args[:], " ")
 		var result search.Result = searchResult(query)
 
 		printResult(result)
@@ -44,7 +46,14 @@ func searchResult(q string) search.Result {
 	// should never return nil, default already set in root.go
 	host := viper.Get("HOST").(string)
 
-	return search.Search(host, q)
+	api := search.API{Client: http.DefaultClient, BaseURL: host}
+
+	resp, err := api.QueryDB(q)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+
+	return resp
 }
 
 // output search result to stdout
