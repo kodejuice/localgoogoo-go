@@ -60,7 +60,6 @@ func initConfig() {
 	viper.SetDefault("HOST", "http://localhost/localgoogoo")
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		// fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
-	}
+	_ = viper.ReadInConfig()
+	// fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 }

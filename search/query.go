@@ -52,14 +52,14 @@ Create an issue if you think this is a bug: (http://github.com/kodejuice/localgo
 		log.Fatalln(err)
 	}
 
-	// Convert the body to type string
-	// result := string(body)
-	// log.Printf(result)
-
 	// decode API response which is
 	// currently in JSON format
 	var r Result
 	err = json.Unmarshal(body, &r)
+
+	if err != nil {
+		fmt.Println("failed to parse json response")
+	}
 
 	return r
 }
