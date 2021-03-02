@@ -22,3 +22,4 @@ _cgo_export.*
 
 *.exe
 bin
+localgoogoo-go
