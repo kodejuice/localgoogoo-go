@@ -1,7 +1,7 @@
 <h1 align="center"><img width="512" src="./.demos/localgoogoo.png" alt="localgoogoo" /></h1>
 
 <p align="center">
-<a href="https://github.com/kodejuice/localgoogoo-go/releases/latest"><img src="https://img.shields.io/github/release/kodejuice/localgoogoo-go.svg?maxAge=600" alt="Latest release" /></a>
+<a href="https://github.com/kodejuice/localgoogoo-go/tags"><img src="https://img.shields.io/github/v/tag/kodejuice/localgoogoo-go" alt="Latest tag" /></a>
 <a href="https://github.com/kodejuice/localgoogoo-go/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-yellowgreen.svg?maxAge=2592000" alt="License" /></a>
 <a href="https://github.com/kodejuice/localgoogoo-go/actions"><img src="https://github.com/kodejuice/localgoogoo-go/actions/workflows/Test.yaml/badge.svg" alt="Build Status" /></a>
 <a href="https://goreportcard.com/report/github.com/kodejuice/localgoogoo-go"><img src="https://goreportcard.com/badge/github.com/kodejuice/localgoogoo-go" alt="Go Report Card" /></a>
