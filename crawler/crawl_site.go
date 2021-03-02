@@ -2,7 +2,7 @@ package crawler
 
 import (
 	"fmt"
-	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -82,7 +82,7 @@ func countPagesCrawled(api *API, siteName, siteURL string) int {
 	}
 
 	// read in response
-	body, err := io.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return pagesCount
 	}
