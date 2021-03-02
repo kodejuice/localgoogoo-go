@@ -94,7 +94,7 @@ func printResult(r search.Result) {
 
 // Used to advance currIndex to next item while printing results.
 // if we're printing in reversed order go back `-1`
-// else go foward `1`
+// else go forward `1`
 func advance(reversed bool) int64 {
 	if reversed {
 		return -1

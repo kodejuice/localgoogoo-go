@@ -42,7 +42,7 @@ func (api *API) launchCrawler(done chan bool) error {
 	return nil
 }
 
-// continuosly poll the localGoogoo database, reporting
+// continuously poll the localGoogoo database, reporting
 // the number of pages crawled
 func (api *API) monitorProgress(done, progressDone chan bool, siteName, siteURL string) {
 	reportStat := func() {
