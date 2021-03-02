@@ -2,8 +2,10 @@ package crawler
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 // API struct for handling http requests
@@ -29,6 +31,8 @@ func (api *API) launchCrawler(done chan bool) error {
 
 	var urlString = fmt.Sprintf("%s%s", api.BaseURL, path)
 
+	fmt.Print("\nCrawling website...\n\n")
+
 	_, err := api.Client.PostForm(urlString, formData)
 	if err != nil {
 		return err
@@ -38,11 +42,11 @@ func (api *API) launchCrawler(done chan bool) error {
 	return nil
 }
 
-// continously poll the localGoogoo database, reporting
+// continuosly poll the localGoogoo database, reporting
 // the number of pages crawled
-func monitorProgress(done chan bool, siteName, siteURL string) {
+func (api *API) monitorProgress(done, progressDone chan bool, siteName, siteURL string) {
 	reportStat := func() {
-		count := countPagesCrawled(siteName, siteURL)
+		count := countPagesCrawled(api, siteName, siteURL)
 		fmt.Printf("%d Crawled Pages\r", count)
 	}
 
@@ -51,6 +55,7 @@ func monitorProgress(done chan bool, siteName, siteURL string) {
 		case <-done:
 			{
 				reportStat() // report one last time before exiting
+				progressDone <- true
 				return
 			}
 		default:
@@ -63,46 +68,53 @@ func monitorProgress(done chan bool, siteName, siteURL string) {
 
 // given a site name and url, return the number of pages
 // of that site stored in the database
-func countPagesCrawled(siteName, siteURL string) int {
-	// TODO: were here
-	return 1
+func countPagesCrawled(api *API, siteName, siteURL string) int {
+	var pagesCount = 0
+	// location of the pages count script wrt localgoogoo root dir
+	var path = "/php/get_pages_count.php"
+
+	var urlString = fmt.Sprintf("%s%s?sitename=%s&siteurl=%s", api.BaseURL, path, siteName, siteURL)
+
+	// make request
+	resp, err := api.Client.Get(urlString)
+	if err != nil {
+		return pagesCount
+	}
+
+	// read in response
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return pagesCount
+	}
+	defer resp.Body.Close()
+
+	// convert response to integers
+	v, err := strconv.Atoi(string(body))
+	if err != nil {
+		return pagesCount
+	}
+
+	return v
 }
 
 // InitCrawler initializes the crawlng process
 func (api *API) InitCrawler(siteName, siteURL string) error {
 	var done = make(chan bool, 1)
+	var progressDone = make(chan bool, 1)
 
 	api.Payload.siteName = siteName
 	api.Payload.siteURL = siteURL
 
-	// monitor progress of the crawling process
-	go monitorProgress(done, siteName, siteURL)
+	// launch goroutine to monitor
+	// progress of the crawling process
+	go api.monitorProgress(done, progressDone, siteName, siteURL)
 
 	err := api.launchCrawler(done)
 
-	fmt.Println("Crawl complete!")
+	// make sure we've reported the final pages count
+	// before returning to caller
+	<-progressDone
+
+	fmt.Println("\n\nCrawl complete!")
 	return err
 }
-
-/*
-crawl(name, site, done):
-	http request to localGoogoo
-	done <- 1
-
-monitor_progress(ch):
-	select {
-		case <-ch: {
-			return
-		}
-		default: {
-			count := http equest to get stats
-			printf("%d %s\r", count, "Crawled sites")
-		}
-	}
-
-start():
-	done := make(chan, 1)
-	go monitor_progress(done)
-	crawl(..., done)
-
-*/
