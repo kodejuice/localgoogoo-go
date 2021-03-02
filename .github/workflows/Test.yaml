@@ -19,7 +19,6 @@ jobs:
         go:
         - 1.14.x
         - 1.15.x
-        - 1.16.x
     name: '${{ matrix.platform }} | ${{ matrix.go }}'
     runs-on: ${{ matrix.platform }}-latest
     steps:
