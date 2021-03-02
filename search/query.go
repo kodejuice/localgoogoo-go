@@ -3,7 +3,7 @@ package search
 import (
 	"encoding/json"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -62,7 +62,7 @@ Create an issue if you think this is a bug: (http://github.com/kodejuice/localgo
 	}
 
 	// We Read the response body on the line below.
-	body, err := io.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		// log.Fatalln(err)
 		return r, err
