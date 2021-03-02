@@ -41,7 +41,45 @@ This installs `localgoogoo-go` to your local machine, you can alias it to a shor
 Usage
 -------------
 
-Make sure localGoogoo is functioning properly in the browser, because all this package does is make http requests to localgoogoo installed on your system and render the results of any query on your terminal.
+Make sure localGoogoo is functioning properly in the browser, because all this package does is make http requests to localgoogoo installed on your system and render the results of any query on your terminal (This may change in the future).
 
+```
+Usage:
+  localgoogoo-go [command]
 
+Available Commands:
+  crawl       Crawl specified wesite
+  help        Help about any command
+  q           Search the localgoogoo database
 
+Flags:
+      --config string   config file (default is $HOME/.localgoogoo.yaml)
+  -h, --help            help for localgoogoo-go
+
+Use "localgoogoo-go [command] --help" for more information about a command.
+```
+
+#### Example
+
+```bash
+$ localgoogoo-go q "stl"
+```
+
+<img src="./.demos/terminal-shot2.png" alt="Asciicast" width="931" height="763"/>
+
+> Note: The above output is due to the fact that i have an offline website (crawled) with information regarding `stl`, you may get a different output.
+
+##### `q` flags
+
+```
+Usage:
+  localgoogoo-go q <query> [flags]
+
+Flags:
+  -n, --count int   number of results to display (default 10)
+  -h, --help        help for q
+  -r, --reverse     display results in reversed order
+
+Global Flags:
+      --config string   config file (default is $HOME/.localgoogoo.yaml)
+```
